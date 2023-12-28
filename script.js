@@ -12,16 +12,24 @@ function getComputerChoice() {
       compChoice = "scissors";
       break;
   }
-  console.log(`Computer choice: ${compChoice}`);
+  console.log(
+    `Computer choice: ${
+      compChoice.charAt(0).toUpperCase() + compChoice.slice(1).toLowerCase()
+    }`
+  );
   return compChoice;
 }
 
 function getPlayerChoice() {
   let playerChoice = prompt("Paper, Rock or Scissors?").toLowerCase();
-  if (playerChoice === "") {
+  if (playerChoice === "" || playerChoice === null) {
     alert("You entered an invalid response");
   }
-  console.log(`Player choice: ${playerChoice}`);
+  console.log(
+    `Player choice: ${
+      playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1).toLowerCase()
+    }`
+  );
   return playerChoice;
 }
 
@@ -29,23 +37,17 @@ function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
     return "It's a tie";
   } else if (playerSelection === "rock") {
-    if (computerSelection === "paper") {
-      return `You lose! ${computerSelection} beats ${playerSelection}.`;
-    } else {
-      return `You win! ${playerSelection} beats ${computerSelection}`; //SCISSORS
-    }
+    return computerSelection === "paper"
+      ? `You lose! ${computerSelection} beats ${playerSelection}.`
+      : `You win! ${playerSelection} beats ${computerSelection}.`;
   } else if (playerSelection === "scissors") {
-    if (computerSelection === "rock") {
-      return `You lose! ${computerSelection} beats ${playerSelection}.`;
-    } else {
-      return `You win! ${playerSelection} beats ${computerSelection}`;
-    }
+    return computerSelection === "rock"
+      ? `You lose! ${computerSelection} beats ${playerSelection}.`
+      : `You win! ${playerSelection} beats ${computerSelection}`;
   } else if (playerSelection === "paper") {
-    if (computerSelection === "scissors") {
-      return `You lose! ${computerSelection} beats ${playerSelection}.`;
-    } else {
-      return `You win! ${playerSelection} beats ${computerSelection}`;
-    }
+    return computerSelection === "scissors"
+      ? `You lose! ${computerSelection} beats ${playerSelection}.`
+      : `You win! ${playerSelection} beats ${computerSelection}`;
   } else {
     return "You made an invalid choice!";
   }
