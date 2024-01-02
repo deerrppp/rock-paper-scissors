@@ -1,64 +1,92 @@
-//Game that loops 5 times using console
+const button = document.querySelectorAll("button");
+const body = document.querySelector("body");
+const resultText = document.createElement("div");
+let playerText = document.createElement("div");
+let computerText = document.createElement("div");
+let whoWins = document.createElement("div");
+let playerSelection;
+let computerSelection;
+let playerScore = 0;
+let computerScore = 0;
+
+button.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    playerSelection = btn.id;
+    getComputerChoice();
+    resultText.textContent = playGame();
+    playerText.textContent = `Player: ${playerScore}`;
+    computerText.textContent = `Computer: ${computerScore}`;
+    whoWins.textContent = checkWinner();
+    body.appendChild(playerText);
+    body.appendChild(computerText);
+    body.appendChild(resultText);
+    body.appendChild(whoWins);
+  });
+});
+
 function getComputerChoice() {
   let number = Math.floor(Math.random() * 3) + 1;
   switch (number) {
     case 1:
-      compChoice = "rock";
+      computerSelection = "rock";
       break;
     case 2:
-      compChoice = "paper";
+      computerSelection = "paper";
       break;
     case 3:
-      compChoice = "scissors";
+      computerSelection = "scissors";
       break;
   }
-  console.log(
-    `Computer choice: ${
-      compChoice.charAt(0).toUpperCase() + compChoice.slice(1).toLowerCase()
-    }`
-  );
-  return compChoice;
+  // console.log(`comp choice: ${compChoice}`);
+  return computerSelection;
 }
 
-function getPlayerChoice() {
-  let playerChoice = prompt("Paper, Rock or Scissors?").toLowerCase();
-  if (playerChoice === "" || playerChoice === null) {
-    alert("You entered an invalid response");
-  }
-  console.log(
-    `Player choice: ${
-      playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1).toLowerCase()
-    }`
-  );
-  return playerChoice;
-}
-
-function playRound(playerSelection, computerSelection) {
-  if (playerSelection === computerSelection) {
-    return "It's a tie";
-  } else if (playerSelection === "rock") {
-    return computerSelection === "paper"
-      ? `You lose! ${computerSelection} beats ${playerSelection}.`
-      : `You win! ${playerSelection} beats ${computerSelection}.`;
-  } else if (playerSelection === "scissors") {
-    return computerSelection === "rock"
-      ? `You lose! ${computerSelection} beats ${playerSelection}.`
-      : `You win! ${playerSelection} beats ${computerSelection}`;
-  } else if (playerSelection === "paper") {
-    return computerSelection === "scissors"
-      ? `You lose! ${computerSelection} beats ${playerSelection}.`
-      : `You win! ${playerSelection} beats ${computerSelection}`;
-  } else {
-    return "You made an invalid choice!";
+function playGame() {
+  while (playerScore < 5 && computerScore < 5) {
+    if (playerSelection === computerSelection) {
+      return "Its a tie";
+    } else if (playerSelection === "rock") {
+      if (computerSelection === "paper") {
+        computerScore += 1;
+        return `You lose! ${playerSelection} loses to ${computerSelection}.`;
+      } else {
+        playerScore += 1;
+        return `You win! ${playerSelection} beats ${computerSelection}.`;
+      }
+    } else if (playerSelection === "scissors") {
+      if (computerSelection === "rock") {
+        computerScore += 1;
+        return `You lose! ${playerSelection} loses to ${computerSelection}.`;
+      } else {
+        playerScore += 1;
+        return `You win! ${playerSelection} beats ${computerSelection}`;
+      }
+    } else if (playerSelection === "paper") {
+      if (computerSelection === "scissors") {
+        computerScore += 1;
+        return `You lose! ${playerSelection} loses to ${computerSelection}.`;
+      } else {
+        playerScore += 1;
+        return `You win! ${playerSelection} beats ${computerSelection}`;
+      }
+    } else {
+      return "You made an invalid choice!";
+    }
   }
 }
 
-function game() {
-  for (let i = 0; i < 5; i++) {
-    const playerSelection = getPlayerChoice();
-    const computerSelection = getComputerChoice();
-    console.log(playRound(playerSelection, computerSelection));
+function checkWinner() {
+  if (playerScore === 5) {
+    disableButtons();
+    return "Player Wins!";
+  } else if (computerScore === 5) {
+    disableButtons();
+    return "Computer Wins!";
   }
 }
 
-game();
+function disableButtons() {
+  button.forEach((btn) => {
+    btn.disabled = true;
+  });
+}
